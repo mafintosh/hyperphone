@@ -1,6 +1,6 @@
 {
   "name": "hyperphone",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "A telephone over Hyperbeam",
   "main": "index.js",
   "bin": {
