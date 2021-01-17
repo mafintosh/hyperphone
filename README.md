@@ -6,18 +6,18 @@ A telephone over [Hyperbeam](https://github.com/mafintosh/hyperbeam)
 npm install -g hyperphone
 ```
 
-Needs sox installed.
+Needs ffmpeg installed.
 
 On mac:
 
 ```sh
-brew install sox
+brew install ffmpeg
 ```
 
 On linux:
 
 ```sh
-sudo apt-get install sox
+sudo apt-get install ffmpeg
 ```
 
 ## Usage
