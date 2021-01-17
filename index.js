@@ -8,6 +8,12 @@ if (process.argv.length < 3) {
   process.exit(1)
 }
 
+const osAudioMap = {
+  linux: 'alsa',
+  darwin: 'avfoundation',
+  windows: 'dshow'
+}
+
 let record
 let play
 
@@ -21,10 +27,10 @@ beam.on('remote-address', function ({ host, port }) {
 
 beam.on('connected', function () {
   console.error('[hyperbeam] Success! Encrypted tunnel established to remote peer')
-  record = spawn('sox', ['-q', '--buffer', '512', '-d', '-r', '44100', '-c', '1', '-e', 'signed-integer', '-b', '16', '-t', 'wav', '-'], {
+  record = spawn('ffmpeg', ['-f', osAudioMap[process.platform], '-i', 'default', '-fflags', 'nobuffer', '-ar', '44100', '-vn', '-f', 'mpegts', '-v', '8', '-hide_banner', '-'], {
     stdio: ['inherit', 'pipe', 'inherit' ]
   })
-  play = spawn('play', ['-q', '--buffer', '512', '-'], {
+  play = spawn('ffplay', ['-f', 'mpegts', '-probesize', '32', '-analyzeduration', '0', '-af', 'adeclick=w=10:o=50', '-i', '-v', '8', '-hide_banner', '-nodisp', '-'], {
     stdio: ['pipe', 'inherit', 'inherit' ]
   })
   record.stdout.pipe(beam).pipe(play.stdin)
